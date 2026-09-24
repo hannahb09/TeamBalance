@@ -24,7 +24,7 @@ def make_random_team(filename, team_size):
                 "position": position
             })
 
-    # Find teams with enough different positions.
+    # Find team with enough different positions.
     possible_teams = [
         team_id
         for team_id in teams
