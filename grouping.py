@@ -32,7 +32,7 @@ def make_random_team(filename, team_size):
     ]
 
     # Randomly choose a team.
-    selected_team = random.choice(possible_teams)
+    selected_team = input("Enter the team ID: ")
 
     # Randomly choose different positions.
     positions = list(teams[selected_team].keys())
@@ -49,7 +49,7 @@ def make_random_team(filename, team_size):
 
 team_id, team = make_random_team("Fielding.csv", 9)
 
-print(f"Random Team: {team_id}")
+print(f"Team: {team_id}")
 
 for player in team:
     print(
