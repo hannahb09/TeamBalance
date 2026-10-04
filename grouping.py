@@ -20,8 +20,9 @@ def make_random_team(filename, team_size):
 
             teams[team_id][position].append({
                 "playerID": row["playerID"],
-                "year": row["yearID"],
-                "position": position
+                "yearID": row["yearID"],
+                "POS": position,
+                "salary": row["salary"]
             })
 
     # Find team with enough different positions.
@@ -47,13 +48,20 @@ def make_random_team(filename, team_size):
     return selected_team, team
 
 
-team_id, team = make_random_team("Fielding.csv", 9)
+team_id, team = make_random_team("Combined.csv", 9)
 
 print(f"Team: {team_id}")
+
+# Calculate total salary
+total_salary = 0
 
 for player in team:
     print(
         f"{player['playerID']} - "
-        f"{player['year']} - "
-        f"{player['position']}"
+        f"{player['yearID']} - "
+        f"{player['POS']} - "
+        f"{player['salary']}"
     )
+    total_salary += int(player["salary"])
+print(f"Total Salary: {total_salary}")
+    
