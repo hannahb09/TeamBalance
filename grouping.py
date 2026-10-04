@@ -25,35 +25,38 @@ def make_random_team(filename, team_size):
                 "salary": row["salary"]
             })
 
-    # Find team with enough different positions.
-    possible_teams = [
-        team_id
-        for team_id in teams
-        if len(teams[team_id]) >= team_size
+    # Choose a team.
+    selected_team = input("Enter the MLB team ID: ")
+
+    # Requried positions need for team
+    required_positions = [
+        "P",
+        "C",
+        "1B",
+        "2B",
+        "3B",
+        "SS",
+        "OF",
+        "OF",
+        "OF"
     ]
-
-    # Randomly choose a team.
-    selected_team = input("Enter the team ID: ")
-
-    # Randomly choose different positions.
-    positions = list(teams[selected_team].keys())
-    random.shuffle(positions)
 
     team = []
 
-    for position in positions[:team_size]:
-        player = random.choice(teams[selected_team][position])
-        team.append(player)
-
+    for position in required_positions:
+        if position in teams[selected_team]:
+            player = random.choice(teams[selected_team][position])
+            team.append(player)
     return selected_team, team
 
 
 team_id, team = make_random_team("Combined.csv", 9)
 
-print(f"Team: {team_id}")
+print(f"MLB Team: {team_id}")
 
 # Calculate total salary
 total_salary = 0
+print("Roster:")
 
 for player in team:
     print(
@@ -63,5 +66,5 @@ for player in team:
         f"{player['salary']}"
     )
     total_salary += int(player["salary"])
-print(f"Total Salary: {total_salary}")
+print(f"Total Team Cost of {team_id}: {total_salary}")
     
