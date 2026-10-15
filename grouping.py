@@ -57,7 +57,7 @@ year = int(input("Enter the year: "))
 
 print(f"Date: {month}/{day}/{year}")
 
-if (month, day, year) > (8, 2, 2027):
+if (year, day, month) >= (2027, 2, 8):
     print("Trade deadline has passed.")
 
 team_id, team = make_random_team("Combined.csv", 9
@@ -80,5 +80,43 @@ for player in team:
 print(f"Total Team Cost of {team_id}: {total_salary}")
 if total_salary < 171200000:
     print(f"Team has not hit salary floor. Amount remaining: ${171200000 - total_salary:,}")
+    add_player = input("Would you like to add another player? (yes/no): ").lower()
+    if add_player == "yes":
+        position = input("Enter the position you want (P, C, 1B, 2B, 3B, SS, OF): ").upper()
+
+    with open("Combined.csv", newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+
+        available_players = [
+            row for row in reader
+            if row["teamID"] == team_id
+            and row["POS"] == position
+            and row["salary"].isdigit()
+            and row["playerID"] not in [
+            player["nameFirst"] == row["nameFirst"]
+            and player["nameLast"] == row["nameLast"]
+        for player in team
+            ]
+        ]
+
+    if available_players:
+        player = random.choice(available_players)
+
+        team.append({
+            "nameFirst": player["nameFirst"],
+            "nameLast": player["nameLast"],
+            "yearID": player["yearID"],
+            "POS": player["POS"],
+            "salary": player["salary"]
+        })
+
+        total_salary += int(player["salary"])
+
+        print(f"Added: {player['nameFirst']} {player['nameLast']} - {position} - ${int(player['salary']):,}")
+        print(f"New Total Team Cost: ${total_salary:,}")
+    else:
+        print("No additional players found at that position.")
+        
+
 if total_salary > 245300000:
     print(f"Team has exceeded salary cap. Amount over: ${total_salary - 245300000:,}")
