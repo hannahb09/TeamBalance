@@ -19,7 +19,8 @@ def make_random_team(filename, team_size):
                 teams[team_id][position] = []
 
             teams[team_id][position].append({
-                "playerID": row["playerID"],
+                "nameFirst": row["nameFirst"],
+                "nameLast": row["nameLast"],
                 "yearID": row["yearID"],
                 "POS": position,
                 "salary": row["salary"]
@@ -49,8 +50,18 @@ def make_random_team(filename, team_size):
             team.append(player)
     return selected_team, team
 
+# Trade deadline for any player in MLB around first Monday of August
+month = int(input("Enter the month: "))
+day = int(input("Enter the day: "))
+year = int(input("Enter the year: "))
 
-team_id, team = make_random_team("Combined.csv", 9)
+print(f"Date: {month}/{day}/{year}")
+
+if (month, day, year) > (8, 2, 2027):
+    print("Trade deadline has passed.")
+
+team_id, team = make_random_team("Combined.csv", 9
+)
 
 print(f"MLB Team: {team_id}")
 
@@ -60,11 +71,14 @@ print("Roster:")
 
 for player in team:
     print(
-        f"{player['playerID']} - "
+        f"{player['nameFirst']} {player['nameLast']} - "
         f"{player['yearID']} - "
         f"{player['POS']} - "
         f"{player['salary']}"
     )
     total_salary += int(player["salary"])
 print(f"Total Team Cost of {team_id}: {total_salary}")
-    
+if total_salary < 171200000:
+    print(f"Team has not hit salary floor. Amount remaining: ${171200000 - total_salary:,}")
+if total_salary > 245300000:
+    print(f"Team has exceeded salary cap. Amount over: ${total_salary - 245300000:,}")
