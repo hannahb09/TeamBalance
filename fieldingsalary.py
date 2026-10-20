@@ -54,7 +54,7 @@ with open("Combined.csv", "w", newline="", encoding="utf-8") as file:
         "yearID",
         "teamID",
         "POS",
-        "salary"
+        "salary",
     ]
 
     writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -72,7 +72,7 @@ with open("Combined.csv", "w", newline="", encoding="utf-8") as file:
                 "yearID": fielding[player_id]["yearID"],
                 "teamID": fielding[player_id]["teamID"],
                 "POS": fielding[player_id]["POS"],
-                "salary": salaries[player_id]["salary"]
+                "salary": salaries[player_id]["salary"],
             })
 
 
