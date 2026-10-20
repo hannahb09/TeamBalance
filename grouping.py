@@ -11,22 +11,22 @@ def make_random_team(filename, team_size):
         for row in reader:
             team_id = row["teamID"]
             position = row["POS"]
-            year = row["yearID"]
+            yearID = row["yearID"]
 
             if team_id not in teams:
                 teams[team_id] = {}
 
-            if year not in teams[team_id]:
-                teams[team_id][year] = {}
+            if yearID not in teams[team_id]:
+                teams[team_id][yearID] = {}
 
             if position not in teams[team_id]:
-                teams[team_id][year][position] = []
+                teams[team_id][yearID][position] = []
 
-            teams[team_id][year][position].append({
+            teams[team_id][yearID][position].append({
                 "playerID": row["playerID"],
                 "nameFirst": row["nameFirst"],
                 "nameLast": row["nameLast"],
-                "year": row["yearID"],
+                "yearID": row["yearID"],
                 "POS": position,
                 "salary": row["salary"]
             })
@@ -80,7 +80,7 @@ for player in team:
     print(
         f"{player['playerID']} - "
         f"{player['nameFirst']} {player['nameLast']} - "
-        f"{player['year']} - "
+        f"{player['yearID']} - "
         f"{player['POS']} - "
         f"{player['salary']}"
     )
@@ -133,15 +133,16 @@ if total_salary > 245300000:
 
 # Save team as a CSV file.
 with open("SelectedTeam.csv", "w", newline="", encoding="utf-8") as file:
-    fieldnames = ["playerID","year", "POS", "salary"]
+    fieldnames = ["teamID", "playerID", "yearID", "POS", "salary"]
     writer = csv.DictWriter(file, fieldnames=fieldnames)
 
     writer.writeheader()
 
     for player in team:
         writer.writerow({
+            "teamID": team_id,
             "playerID": player["playerID"],
-            "year": player.get("year", player.get("yearID", "")),
+            "yearID": player.get("yearID", ""),
             "POS": player["POS"],
             "salary": player["salary"]
         })
