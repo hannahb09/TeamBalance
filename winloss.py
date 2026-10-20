@@ -17,6 +17,7 @@ if not team:
 # Get the MLB team ID and year from the saved roster.
 team_id = team[0]["teamID"]
 selected_year = int(team[0]["yearID"])
+previous_year = selected_year - 1
 
 # Store batting runs for each player.
 batting = {}
@@ -26,39 +27,36 @@ with open("Batting.csv", newline="", encoding="utf-8") as file:
 
     for row in reader:
         player_id = row["playerID"]
-        year = row["yearID"]
-        batting_team = row["teamID"]
+        year = int(row["yearID"])
+        runs = int(row["R"] or 0)
 
-        if batting_team == team_id:
-            key = (player_id, year, batting_team)
+        if year == previous_year:
+            key = (player_id, year)
 
             if key not in batting:
                 batting[key] = 0
 
-            batting[key] += int(row["R"] or 0)
+            batting[key] += int(runs)
 
 # Calculate the total runs for the selected team.
 total_runs = 0
 
 print(f"MLB Team: {team_id}")
 print(f"Year: {selected_year}")
+print(f"Using batting statistics from: {previous_year}")
 print("Player Runs:")
 
 for player in team:
     player_id = player["playerID"]
-    year = player["yearID"]
-
-    key = (player_id, year, team_id)
+    key = (player_id, previous_year)
     runs = batting.get(key, 0)
 
-    print(f"{player_id} - {year} - Runs: {runs}")
-
+    print(f"{player_id} - {previous_year} - Runs: {runs}")
     total_runs += runs
 
 print(f"Total Runs for {team_id}: {total_runs}")
 
 # Find total runs allowed by the team in the previous year.
-previous_year = selected_year - 1
 previous_runs_allowed = 0
 found_previous_year = False
 
