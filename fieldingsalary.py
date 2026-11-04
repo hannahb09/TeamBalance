@@ -11,8 +11,9 @@ with open("Salaries.csv", newline="", encoding="utf-8") as file:
 
     for row in reader:
         player_id = row["playerID"]
+        year = row["yearID"]
 
-        salaries[player_id] = {
+        salaries[(player_id, year)] = {
             "playerID": row["playerID"],
             "yearID": row["yearID"],
             "salary": row["salary"]
@@ -25,8 +26,9 @@ with open("Fielding.csv", newline="", encoding="utf-8") as file:
 
     for row in reader:
         player_id = row["playerID"]
+        year = row["yearID"]
 
-        fielding[player_id] = {
+        fielding[(player_id, year)] = {
             "playerID": row["playerID"],
             "yearID": row["yearID"],
             "teamID": row["teamID"],
@@ -61,18 +63,22 @@ with open("Combined.csv", "w", newline="", encoding="utf-8") as file:
     writer.writeheader()
 
     # Only keep players found in both files
-    for player_id in salaries:
+    for player_id, year in fielding:
+                
+            salary = "0"
 
-        if player_id in fielding:
+
+            if (player_id, year) in salaries:
+                salary = salaries[(player_id, year)]["salary"]
 
             writer.writerow({
                 "playerID": player_id,
                 "nameFirst": people[player_id]["nameFirst"],
                 "nameLast": people[player_id]["nameLast"],
-                "yearID": fielding[player_id]["yearID"],
-                "teamID": fielding[player_id]["teamID"],
-                "POS": fielding[player_id]["POS"],
-                "salary": salaries[player_id]["salary"],
+                "yearID": year,
+                "teamID": fielding[(player_id, year)]["teamID"],
+                "POS": fielding[(player_id, year)]["POS"],
+                "salary": salary,
             })
 
 
