@@ -62,7 +62,7 @@ with open("Combined.csv", "w", newline="", encoding="utf-8") as file:
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()
 
-    # Only keep players found in both files
+    # If no salary found for a player, set salary to 0
     for player_id, year in fielding:
                 
             salary = "0"
