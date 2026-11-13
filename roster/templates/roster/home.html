@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,7 @@
 <body>
 
     <h1>TeamBalance</h1>
-    <h2>Build a Better MLB Roster</h2>
+    <h2>Build a MLB Roster</h2>
 
     <p>
         Create a balanced nine-player MLB roster.
@@ -42,7 +41,9 @@
 
         <br><br>
 
-        <button type="submit">Build My Team</button>
+        <button type="submit" name="action" value="build">
+            Build My Team
+        </button>
     </form>
 
     {% if error %}
@@ -100,5 +101,55 @@
 
     {% endif %}
 
+    {% if has_saved_team %}
+        <form method="POST">
+            {% csrf_token %}
+
+            <button type="submit" name="action" value="calculate">
+                Calculate Winning Percentage
+            </button>
+        </form>
+    {% endif %}
+
+    {% if win_result %}
+
+        <h2>Winning Percentage Results</h2>
+
+        <h3>Individual Player Runs</h3>
+
+        <table border="1">
+            <tr>
+                <th>Player ID</th>
+                <th>Previous Year</th>
+                <th>Runs Scored</th>
+            </tr>
+
+            {% for player in win_result.player_runs %}
+            <tr>
+                <td>{{ player.playerID }}</td>
+                <td>{{ player.year }}</td>
+                <td>{{ player.runs }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Total Team Runs: {{ win_result.total_runs }}</h3>
+
+        <p>Team Runs Allowed: {{ win_result.runs_allowed }}</p>
+
+        <h3>
+            Winning Percentage:
+            {{ win_result.win_percentage|floatformat:3 }}
+        </h3>
+
+        <h3>
+            Suggested Record:
+            {{ win_result.suggested_wins }} Wins -
+            {{ win_result.suggested_losses }} Losses
+        </h3>
+
+    {% endif %}
+
+</form>
 </body>
 </html>
