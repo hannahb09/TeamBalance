@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TeamBalance</title>
+</head>
+
+<body>
+
+    <h1>TeamBalance</h1>
+    <h2>Build a Better MLB Roster</h2>
+
+    <p>
+        Create a balanced nine-player MLB roster.
+    </p>
+
+    <h3>Build Your Team</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="team">MLB Team:</label>
+        <input
+            type="text"
+            id="team"
+            name="team"
+            placeholder="Example: NYA"
+            required
+        >
+
+        <br><br>
+
+        <label for="year">Season Year:</label>
+        <input
+            type="number"
+            id="year"
+            name="year"
+            placeholder="Example: 2024"
+            required
+        >
+
+        <br><br>
+
+        <button type="submit">Build My Team</button>
+    </form>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+    {% if result %}
+
+        <h2>MLB Team: {{ result.team_id }}</h2>
+        <h3>Year: {{ result.year }}</h3>
+
+        <h3>Roster</h3>
+
+        <table border="1">
+            <tr>
+                <th>Player ID</th>
+                <th>Player Name</th>
+                <th>Year</th>
+                <th>Position</th>
+                <th>Salary</th>
+            </tr>
+
+            {% for player in result.roster %}
+            <tr>
+                <td>{{ player.playerID }}</td>
+                <td>{{ player.nameFirst }} {{ player.nameLast }}</td>
+                <td>{{ player.yearID }}</td>
+                <td>{{ player.POS }}</td>
+                <td>${{ player.salary }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Total Team Cost: ${{ result.total_salary }}</h3>
+
+        {% if result.amount_remaining > 0 %}
+            <p>
+                Team has not hit salary floor.
+                Amount remaining: ${{ result.amount_remaining }}
+            </p>
+        {% endif %}
+
+        {% if result.amount_over > 0 %}
+            <p>
+                Team has exceeded salary cap.
+                Amount over: ${{ result.amount_over }}
+            </p>
+        {% endif %}
+
+        {% if result.missing_positions %}
+            <p>
+                Missing positions: {{ result.missing_positions }}
+            </p>
+        {% endif %}
+
+    {% endif %}
+
+</body>
+</html>
