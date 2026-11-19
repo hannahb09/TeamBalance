@@ -57,6 +57,10 @@ def home(request):
                 writer.writerow(["TeamBalance Roster"])
                 writer.writerow(["MLB Team", team_result["team_id"]])
                 writer.writerow(["Season", team_result["year"]])
+                writer.writerow([
+                    "Previous Season",
+                    win_result["previous_year"]
+                ])
                 writer.writerow(["Total Team Cost", team_result["total_salary"]])
                 writer.writerow(["Total Runs", win_result["total_runs"]])
                 writer.writerow(["Runs Allowed", win_result["runs_allowed"]])
@@ -73,22 +77,40 @@ def home(request):
                 ])
 
                 writer.writerow([])
+
+                # Player information header
                 writer.writerow([
                     "Player ID",
                     "Player Name",
                     "Year",
                     "Position",
-                    "Salary"
+                    "Salary",
+                    "Previous Season",
+                    "Previous Season Runs"
                 ])
+                
+                  # Match previous-season runs to each roster player
+                player_runs_lookup = {
+                    player["playerID"]: player
+                    for player in win_result["player_runs"]
+                }
+
                 # Individual player information
                 for player in roster:
+                    previous_player = player_runs_lookup.get(
+                        player["playerID"], {}
+                    )
+
                     writer.writerow([
                         player["playerID"],
                         f'{player["nameFirst"]} {player["nameLast"]}',
                         player["yearID"],
                         player["POS"],
-                        player["salary"]
+                        player["salary"],
+                        win_result["previous_year"],
+                        previous_player.get("runs", 0)
                     ])
+                
                 # Total salary at the bottom
                 writer.writerow([])
                 writer.writerow(["Total Team Cost", team_result["total_salary"]])
