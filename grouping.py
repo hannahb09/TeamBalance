@@ -69,8 +69,8 @@ def make_random_team(filename, selected_team, selected_year):
     )
 
     # Salary floor and cap
-    salary_floor = 171200000
-    salary_cap = 245300000
+    salary_floor = 171,200,000
+    salary_cap = 245,300,000
 
     amount_remaining = max(0, salary_floor - total_salary)
     amount_over = max(0, total_salary - salary_cap)
