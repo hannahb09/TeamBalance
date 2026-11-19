@@ -1,10 +1,10 @@
 import csv
 import random
 
-
+# Function to create a random team based on the selected team and year
 def make_random_team(filename, selected_team, selected_year):
     teams = {}
-
+    # Read the CSV file and organize players by team, year, and position
     with open(filename, newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
 
@@ -85,9 +85,9 @@ def make_random_team(filename, selected_team, selected_year):
         "missing_positions": missing_positions
     }
 
-
+# Function to calculate win-loss record based on the roster, batting data, and team data
 def calculate_win_loss(roster, batting_file, teams_file):
-
+    # Check if the roster is empty
     if not roster:
         return {"error": "Please build a team first."}
 
@@ -122,6 +122,9 @@ def calculate_win_loss(roster, batting_file, teams_file):
 
         player_runs.append({
             "playerID": player_id,
+            "nameFirst": player["nameFirst"],
+            "nameLast": player["nameLast"],
+            "POS": player["POS"],
             "year": previous_year,
             "runs": runs
         })
@@ -145,7 +148,8 @@ def calculate_win_loss(roster, batting_file, teams_file):
 
     if not found_previous_year:
         return {"error": f"No team data found for {team_id} in {previous_year}."}
-
+    
+    # Calculate winning percentage using the Pythagorean expectation formula
     denominator = total_runs ** 1.83 + previous_runs_allowed ** 1.83
 
     if denominator == 0:
@@ -153,7 +157,7 @@ def calculate_win_loss(roster, batting_file, teams_file):
 
     win_percentage = (total_runs ** 1.83) / denominator
 
-    suggested_wins = round(win_percentage * 162)
+    suggested_wins = 49 + round(win_percentage * 162)
     suggested_losses = 162 - suggested_wins
 
     return {

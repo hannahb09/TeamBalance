@@ -120,6 +120,8 @@
         <table border="1">
             <tr>
                 <th>Player ID</th>
+                <th>Player Name</th>
+                <th>Position</th>
                 <th>Previous Year</th>
                 <th>Runs Scored</th>
             </tr>
@@ -127,6 +129,8 @@
             {% for player in win_result.player_runs %}
             <tr>
                 <td>{{ player.playerID }}</td>
+                <td>{{ player.nameFirst }} {{ player.nameLast }}</td>
+                <td>{{ player.POS }}</td>
                 <td>{{ player.year }}</td>
                 <td>{{ player.runs }}</td>
             </tr>
