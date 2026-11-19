@@ -153,6 +153,15 @@
         </h3>
 
     {% endif %}
+    {% if has_saved_team %}
+        <form method="POST">
+            {% csrf_token %}
+
+            <button type="submit" name="action" value="download">
+                Download Roster
+            </button>
+        </form>
+    {% endif %}
 
 </form>
 </body>
